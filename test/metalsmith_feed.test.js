@@ -228,7 +228,52 @@ describe('metalsmith-feed', function() {
       const rss = await parse(await build(this.metalsmith));
       assert.equal(rss.channel[0].item.length, 25);
     });
+
+    it('limitFromEnd set to true', async function() {
+      const options = {
+        collection: 'posts',
+        limit: 20,
+        limitFromEnd: true
+      };
+
+      this.metalsmith.use(feed(options));
+
+      const rss = await parse(await build(this.metalsmith));
+
+      const colRss = rss.channel[0].item;
+      const colMet = this.metalsmith._metadata[options.collection];
+
+      assert.equal(colRss.length, options.limit);
+      
+      // last item of collection is the same as the last item in the feed
+      assert.equal('http://example.com/' + colMet[colMet.length-1].path, colRss[colRss.length-1].link[0]); 
+      // item x of collection is the same as the first item in the feed
+      assert.equal('http://example.com/' + colMet[colMet.length-options.limit].path, colRss[0].link[0]);
+    });
+
+    it('limitFromEnd set to false', async function() {
+      const options = {
+        collection: 'posts',
+        limit: 20,
+        limitFromEnd: false
+      };
+
+      this.metalsmith.use(feed(options));
+
+      const rss = await parse(await build(this.metalsmith));
+
+      const colRss = rss.channel[0].item;
+      const colMet = this.metalsmith._metadata[options.collection];
+
+      assert.equal(colRss.length, options.limit);
+
+      // first item of collection is the same as the first item in the feed
+      assert.equal('http://example.com/' + colMet[0].path, colRss[0].link[0]); 
+      // item x of collection is the same as the last item in the feed
+      assert.equal('http://example.com/' + colMet[options.limit-1].path, colRss[colRss.length-1].link[0]);
+    });
   });
+
 
   it('complains if metalsmith-collections isnt setup', async function() {
     const metalsmith = Metalsmith('test/fixtures/simple')
