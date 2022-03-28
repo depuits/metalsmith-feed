@@ -8,6 +8,7 @@ module.exports = function(options) {
   const limit = options.limit != null ? options.limit : 20;
   const destination = options.destination || 'rss.xml';
   const collectionName = options.collection;
+  const limitFromEnd = options.limitFromEnd;
 
   if (!collectionName) {
     throw new Error('collection option is required');
@@ -44,7 +45,11 @@ module.exports = function(options) {
 
     const feed = new RSS(feedOptions);
     if (limit) {
-      collection = collection.slice(0, limit);
+      if (limitFromEnd) {
+        collection = collection.slice(limit * -1);
+      } else {
+        collection = collection.slice(0, limit);
+      }
     }
     const preprocess = options.preprocess || (file => file);
     for (let file of collection) {

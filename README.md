@@ -34,6 +34,8 @@ Take a look at the tests for [example usage](test/metalsmith_feed.test.js).
 
 * `limit` **Number** _Optional_. Maximum number of documents to show in the feed. Defaults to `20`. Set to `false` to include all documents.
 
+* `limitFromEnd` **Boolean** _Optional_. Take the number of limited items from the end of the collection instead of the start. Defaults to `false`.
+
 * `destination` **string** _Optional_. File path to write the rendered XML feed. Defaults to `'rss.xml'`.
 
 * `preprocess` **function** _Optional_. Map collection entries to [RSS items](https://github.com/dylang/node-rss#itemoptions). Some fields (like `description` and `url`) have default mappings that support Metalsmith plugin conventions. Many other fields (like `title`, `author`, and `date`) work great without any customization. You can customize any of these fields in `preprocess`.
@@ -48,22 +50,21 @@ Take a look at the tests for [example usage](test/metalsmith_feed.test.js).
         title: file.title.toUpperCase()
 
         /*
-  description: ...
-  Description defaults to `file.less` from metalsmith-more,
-  `file.excerpt` from metalsmith-excerpt, and finally the
-  full `file.contents`
-  ```
+          description: ...
+          Description defaults to `file.less` from metalsmith-more,
+          `file.excerpt` from metalsmith-excerpt, and finally the
+          full `file.contents`
 
-url: ...
-If files have `path` metadata (perhaps from metalsmith-permalinks)
-but not `url` metadata, we'll prefix `path` with `site_url` to
-generate links.
-\*/
-})
-})
-);
+          url: ...
+          If files have `path` metadata (perhaps from metalsmith-permalinks)
+          but not `url` metadata, we'll prefix `path` with `site_url` to
+          generate links.
+          \*/
+        })
+    })
+  );
+```
 
-````
 Remaining options are passed to the [rss](https://github.com/dylang/node-rss) module as `feedOptions`, along with `metadata.site`.
 
 ### Multiple Feeds
