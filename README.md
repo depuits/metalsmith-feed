@@ -40,7 +40,7 @@ Take a look at the tests for [example usage](test/metalsmith_feed.test.js).
 
 * `preprocess` **function** _Optional_. Map collection entries to [RSS items](https://github.com/dylang/node-rss#itemoptions). Some fields (like `description` and `url`) have default mappings that support Metalsmith plugin conventions. Many other fields (like `title`, `author`, and `date`) work great without any customization. You can customize any of these fields in `preprocess`.
 
-  ```js
+```js
   Metalsmith('example').use(
     feed({
       collection: 'posts',
@@ -91,4 +91,4 @@ Metalsmith('example')
     destination: 'bar-rss.xml'
   })
 );
-````
+```
