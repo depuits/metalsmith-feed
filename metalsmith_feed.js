@@ -46,7 +46,8 @@ module.exports = function(options) {
     const feed = new RSS(feedOptions);
     if (limit) {
       if (limitFromEnd) {
-        collection = collection.slice(limit * -1);
+        // when taking items from the end it is logical to also reverse the order so the last items becomes the first
+        collection = collection.slice(limit * -1).reverse();
       } else {
         collection = collection.slice(0, limit);
       }
